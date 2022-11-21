@@ -11,7 +11,8 @@
   "projects": [
     {
       "packageName": "@moebius/mongo-backup",
-      "projectFolder": "packages/mongo-backup"
+      "projectFolder": "packages/mongo-backup",
+      "shouldPublish": true
     },
     {
       "packageName": "@examples/mongo-backup",
