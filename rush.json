@@ -1,0 +1,22 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/rush.schema.json",
+  "rushVersion": "5.83.4",
+  "pnpmVersion": "7.17.0",
+  "nodeSupportedVersionRange": ">=18",
+  "ensureConsistentVersions": true,
+  "repository": {
+    "url": "https://github.com/the-moebius/mongo-backup"
+  },
+  "telemetryEnabled": false,
+  "projects": [
+    {
+      "packageName": "@moebius/mongo-backup",
+      "projectFolder": "packages/mongo-backup"
+    },
+    {
+      "packageName": "@examples/mongo-backup",
+      "projectFolder": "examples/mongo-backup",
+      "shouldPublish": false
+    }
+  ]
+}
