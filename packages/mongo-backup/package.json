@@ -11,6 +11,9 @@
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
   "license": "MIT",
+  "files": [
+    "README.md"
+  ],
   "devDependencies": {
     "@tsconfig/node-lts-strictest-esm": "^18.12.1",
     "@types/node": "^18.11.9",
