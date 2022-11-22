@@ -12,6 +12,7 @@
   "types": "dist/types/index.d.ts",
   "license": "MIT",
   "files": [
+    "dist/",
     "README.md"
   ],
   "publishConfig": {

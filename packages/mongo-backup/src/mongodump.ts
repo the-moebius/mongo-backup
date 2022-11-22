@@ -1,14 +1,15 @@
 
 import type { CipherKey } from 'node:crypto';
 import type { Transform } from 'node:stream';
+import type { Writable } from 'node:stream';
 import { join } from 'node:path';
 
 import { execa } from 'execa';
 
-import type { Writer } from '../writers/writer.js';
-import { useEncryption } from './encryption.js';
-import { logger } from './logger.js';
-import { pipeline } from './streams.js';
+import type { Writer } from './writers/writer.js';
+import { useEncryption } from './common/encryption.js';
+import { logger } from './common/logger.js';
+import { pipeline } from './common/streams.js';
 
 
 export interface CreateMongoDumpArgs {
@@ -18,6 +19,7 @@ export interface CreateMongoDumpArgs {
   output?: OutputOptions;
   gzip?: boolean;
   encryption?: EncryptionOptions;
+  logStream?: (Writable | false);
 }
 
 export interface OutputOptions {
@@ -88,8 +90,10 @@ export async function createMongoDump(
     ])
   );
 
-  // Redirecting error log to screen
-  stderr?.pipe(process.stderr);
+  // Redirecting error log
+  if (args.logStream !== false) {
+    stderr?.pipe(args.logStream || process.stdout);
+  }
 
   // Waiting for all operations to complete
   await Promise.all(promises);
@@ -107,7 +111,6 @@ export async function createMongoDump(
 
     if (args.output?.outputName) {
       return args.output.outputName;
-
     }
 
     let outputName = 'mongodump';
