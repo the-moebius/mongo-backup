@@ -1,11 +1,14 @@
 
 import './common/dotenv.js';
 
+import {
+  CreateMongoDumpArgs,
+  S3Writer,
+  createMongoDump,
+
+} from '@moebius/mongo-backup';
+
 import { EnvVars } from './common/env-vars.js';
-import { logger } from './common/logger.js';
-import { createMongoDump, CreateMongoDumpArgs } from './common/mongodump.js';
-import { FSWriter } from './writers/fs-writer.js';
-import { S3Writer } from './writers/s3-writer.js';
 
 
 export async function main(): Promise<void> {
@@ -29,16 +32,14 @@ export async function main(): Promise<void> {
     },
   });
 
-  const fsWriter = new FSWriter();
+  // const fsWriter = new FSWriter();
 
   const args: CreateMongoDumpArgs = {
     url: mongoUrl,
     writer: s3Writer,
     // writer: fsWriter,
     output: {
-      basePath: 'dumps/foo',
-      outputName: 'hello.dump',
-      overwrite: true,
+      basePath: 'hourly',
     },
     encryption: {
       key,
@@ -48,7 +49,7 @@ export async function main(): Promise<void> {
 
   if (databases) {
 
-    logger.info(
+    console.log(
       `Starting to dump the configured databases: ` +
       `${databases.join(', ')}`
     );
@@ -58,7 +59,6 @@ export async function main(): Promise<void> {
         ...args,
         db,
       });
-
     }
 
   } else {
@@ -73,7 +73,7 @@ try {
   await main();
 
 } catch (error: any) {
-  logger.error(`Application failed with error`);
-  logger.error(error);
+  console.error(`Application failed with error`);
+  console.error(error);
 
 }
