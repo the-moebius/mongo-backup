@@ -2,29 +2,31 @@
 import type { CipherKey } from 'node:crypto';
 import type { Transform } from 'node:stream';
 import type { Writable } from 'node:stream';
-import { join } from 'node:path';
 
 import { execa } from 'execa';
+import { DateTime } from 'luxon';
+import { createBrotliCompress } from 'zlib';
 
-import type { Writer } from './writers/writer.js';
+import type { StorageProvider as SP } from './storage-providers/storage-provider.js';
 import { useEncryption } from './common/encryption.js';
-import { logger } from './common/logger.js';
 import { pipeline } from './common/streams.js';
 
 
 export interface CreateMongoDumpArgs {
-  url: string;
-  writer: Writer;
+  storageProvider: SP.StorageProvider;
+  uri: string;
   db?: string;
   output?: OutputOptions;
+  oplog?: boolean;
   gzip?: boolean;
+  brotli?: boolean;
   encryption?: EncryptionOptions;
+  excludeCollections?: string[];
   logStream?: (Writable | false);
 }
 
 export interface OutputOptions {
-  basePath?: string;
-  outputName?: string;
+  path?: string;
   overwrite?: boolean;
 }
 
@@ -38,22 +40,24 @@ export async function createMongoDump(
 
 ): Promise<void> {
 
-  if (args.db) {
-    logger.info(`Creating dump of the ${args.db} database`);
+  if (args.db && args.oplog) {
+    throw new Error(
+      `The "oplog" option can only be used for a full dump, ` +
+      `do not specify the "db" option if you want that`
+    );
+  }
 
-  } else {
-    logger.info(`Creating database cluster dump`);
-
+  if (args.gzip && args.brotli) {
+    throw new Error(
+      `"gzip" and "brotli" options can't be used at the same time`
+    );
   }
 
   // A list of pending promises to await
   const promises: Promise<any>[] = [];
 
-  const writer = await args.writer.use({
-    outputPath: join(
-      (args.output?.basePath || process.cwd()),
-      getOutputName()
-    ),
+  const writer = await args.storageProvider.write({
+    path: getOutputPath(),
     overwrite: args.output?.overwrite,
   });
 
@@ -62,6 +66,10 @@ export async function createMongoDump(
   }
 
   const transformers: Transform[] = [];
+
+  if (args.brotli) {
+    transformers.push(createBrotliCompress());
+  }
 
   if (args.encryption) {
     transformers.push(
@@ -98,25 +106,28 @@ export async function createMongoDump(
   // Waiting for all operations to complete
   await Promise.all(promises);
 
-  if (args.db) {
-    logger.info(`Finished dumping ${args.db} database`);
 
-  } else {
-    logger.info(`Database cluster dump complete`);
+  function getOutputPath(): string {
 
-  }
-
-
-  function getOutputName(): string {
-
-    if (args.output?.outputName) {
-      return args.output.outputName;
+    if (args.output?.path) {
+      return args.output.path;
     }
 
-    let outputName = 'mongodump';
+    const date = DateTime.now().toUTC();
+
+    const dateStr = date.toFormat('yyMMdd');
+    const timeStr = date.toFormat('HHmmss');
+
+    let outputName = (
+      `${dateStr}/${dateStr}-${timeStr}-mongodump`
+    );
 
     if (args.gzip) {
       outputName += '.gz';
+    }
+
+    if (args.brotli) {
+      outputName += '.br';
     }
 
     if (args.encryption) {
@@ -130,18 +141,28 @@ export async function createMongoDump(
   function getMongodumpArgs(): string[] {
 
     const mongodumpArgs: string[] = [
-      `--uri="${args.url}"`,
+      `--uri="${args.uri}"`,
       `--archive`,
     ];
-
-    if (args.gzip) {
-      mongodumpArgs.push(`--gzip`);
-    }
 
     if (args.db) {
       mongodumpArgs.push(
         `--db="${args.db}"`,
       );
+    }
+
+    if (args.oplog) {
+      mongodumpArgs.push(`--oplog`);
+    }
+
+    if (args.gzip) {
+      mongodumpArgs.push(`--gzip`);
+    }
+
+    if (args.excludeCollections) {
+      for (const name of args.excludeCollections) {
+        mongodumpArgs.push(`--excludeCollection="${name}"`)
+      }
     }
 
     return mongodumpArgs;

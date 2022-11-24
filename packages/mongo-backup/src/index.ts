@@ -8,17 +8,18 @@ export {
 } from './mongodump.js';
 
 export {
-  Writer,
-  WriterArgs,
-  WriterResult,
+  mongoRestore,
+  MongoRestoreArgs,
 
-} from './writers/writer.js';
+} from './mongorestore.js';
 
-export { FSWriter } from './writers/fs-writer.js';
+export { StorageProvider } from './storage-providers/storage-provider.js';
+
+export { FsStorageProvider } from './storage-providers/fs-storage-provider.js';
 
 export {
   PartialRequest,
-  S3Writer,
-  S3WriterOptions,
+  S3StorageProvider,
+  S3StorageProviderOptions,
 
-} from './writers/s3-writer.js';
+} from './storage-providers/s3-storage-provider.js';

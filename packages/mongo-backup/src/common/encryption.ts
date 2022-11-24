@@ -1,6 +1,16 @@
 
-import type { Transform, Writable } from 'node:stream';
-import { CipherKey, createCipheriv, randomBytes } from 'node:crypto';
+import type { Transform, Readable, Writable } from 'node:stream';
+
+import {
+  CipherKey,
+  createCipheriv,
+  createDecipheriv,
+  randomBytes,
+
+} from 'node:crypto';
+
+
+const algorithm = 'aes-256-ctr';
 
 
 export function useEncryption(args: {
@@ -12,7 +22,7 @@ export function useEncryption(args: {
   const iv = randomBytes(16);
 
   const cipher = createCipheriv(
-    'aes-256-gcm',
+    algorithm,
     args.key,
     iv
   );
@@ -22,5 +32,36 @@ export function useEncryption(args: {
   args.outputStream.write(iv);
 
   return cipher;
+
+}
+
+export async function useDecryption(args: {
+  key: CipherKey;
+  inputStream: Readable;
+
+}): Promise<Transform> {
+
+  const { key, inputStream } = args;
+
+  return new Promise(resolve => {
+
+    inputStream.on('readable', onReadable);
+
+
+    function onReadable() {
+
+      // Reading IV from the beginning of the file
+      const iv = inputStream.read(16);
+
+      // This will continue the stream
+      inputStream.off('readable', onReadable);
+
+      const decipher = createDecipheriv(algorithm, key, iv);
+
+      resolve(decipher);
+
+    }
+
+  });
 
 }
