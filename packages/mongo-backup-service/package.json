@@ -1,6 +1,6 @@
 {
   "name": "@moebius/mongo-backup-service",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "MongoDB backup service",
   "license": "MIT",
   "scripts": {
