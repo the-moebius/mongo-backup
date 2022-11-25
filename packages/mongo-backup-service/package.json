@@ -1,6 +1,6 @@
 {
   "name": "@moebius/mongo-backup-service",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "MongoDB backup service",
   "license": "MIT",
   "scripts": {
@@ -26,7 +26,7 @@
     "tag": "beta"
   },
   "dependencies": {
-    "@moebius/mongo-backup": "workspace:*",
+    "@moebius/mongo-backup": "0.0.1",
     "@sinclair/typebox": "^0.25.9",
     "node-schedule": "^2.1.0",
     "pino": "^8.7.0"
