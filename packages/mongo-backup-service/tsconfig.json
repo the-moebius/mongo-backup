@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@tsconfig/node-lts-strictest-esm/tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist/",
+    "sourceMap": true,
+    "declaration": true,
+    "declarationDir": "dist/types/",
+    "noUnusedLocals": false
+  },
+  "ts-node": {
+    "esm": true,
+  },
+  "include": [
+    "."
+  ],
+  "exclude": [
+    "dist/",
+    "node_modules/"
+  ]
+}

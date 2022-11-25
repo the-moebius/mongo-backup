@@ -1,0 +1,46 @@
+{
+  "$schema": "config-schema.json",
+  "clusters": [
+    {
+      "name": "my-cluster",
+      "uri": "$ENV:MONGO_URI"
+    }
+  ],
+  "storages": [
+    {
+      "name": "my-s3",
+      "type": "s3",
+      "options": {
+        "bucket": "my-s3-bucket",
+        "accessKeyId": "$ENV:AWS_ACCESS_KEY_ID",
+        "secretAccessKey": "$ENV:AWS_SECRET_ACCESS_KEY"
+      }
+    }
+  ],
+  "jobs": [
+    {
+      "name": "foo/minutely",
+      "schedule": "*/1 * * * *",
+      "cluster": "my-cluster",
+      "storages": [
+        "my-s3"
+      ],
+      "db": "foo",
+      "encryptionKey": "$ENV:ENCRYPTION_KEY",
+      "excludeCollections": [
+        "cache",
+        "locks"
+      ]
+    },
+    {
+      "name": "bar/daily",
+      "schedule": "0 0 * * *",
+      "cluster": "my-cluster",
+      "storages": [
+        "my-s3"
+      ],
+      "db": "bar",
+      "encryptionKey": "$ENV:ENCRYPTION_KEY"
+    }
+  ]
+}

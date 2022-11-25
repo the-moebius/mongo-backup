@@ -10,13 +10,18 @@
   "telemetryEnabled": false,
   "projects": [
     {
+      "packageName": "@examples/mongo-backup",
+      "projectFolder": "examples/mongo-backup",
+      "shouldPublish": false
+    },
+    {
       "packageName": "@moebius/mongo-backup",
       "projectFolder": "packages/mongo-backup",
       "shouldPublish": true
     },
     {
-      "packageName": "@examples/mongo-backup",
-      "projectFolder": "examples/mongo-backup",
+      "packageName": "@moebius/mongo-backup-service",
+      "projectFolder": "packages/mongo-backup-service",
       "shouldPublish": false
     }
   ]

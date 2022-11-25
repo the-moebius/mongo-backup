@@ -1,0 +1,113 @@
+{
+  "type": "object",
+  "properties": {
+    "clusters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "uri": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "uri"
+        ]
+      }
+    },
+    "storages": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "type": {
+                "const": "s3",
+                "type": "string"
+              },
+              "options": {
+                "type": "object",
+                "properties": {
+                  "bucket": {
+                    "type": "string"
+                  },
+                  "endpoint": {
+                    "type": "string"
+                  },
+                  "accessKeyId": {
+                    "type": "string"
+                  },
+                  "secretAccessKey": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "bucket"
+                ]
+              }
+            },
+            "required": [
+              "name",
+              "type",
+              "options"
+            ]
+          }
+        ]
+      }
+    },
+    "jobs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "schedule": {
+            "type": "string"
+          },
+          "cluster": {
+            "type": "string"
+          },
+          "storages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "db": {
+            "type": "string"
+          },
+          "excludeCollections": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "encryptionKey": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "schedule",
+          "cluster",
+          "storages"
+        ]
+      }
+    }
+  },
+  "required": [
+    "clusters",
+    "storages",
+    "jobs"
+  ]
+}
