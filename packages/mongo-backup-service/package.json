@@ -21,6 +21,10 @@
     "config-schema.json",
     "README.md"
   ],
+  "publishConfig": {
+    "access": "public",
+    "tag": "beta"
+  },
   "dependencies": {
     "@moebius/mongo-backup": "workspace:*",
     "@sinclair/typebox": "^0.25.9",
