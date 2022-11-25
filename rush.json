@@ -22,7 +22,7 @@
     {
       "packageName": "@moebius/mongo-backup-service",
       "projectFolder": "packages/mongo-backup-service",
-      "shouldPublish": false
+      "shouldPublish": true
     }
   ]
 }
