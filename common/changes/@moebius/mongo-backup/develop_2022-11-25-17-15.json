@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@moebius/mongo-backup",
+      "comment": "Done some work",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@moebius/mongo-backup"
+}
