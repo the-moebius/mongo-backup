@@ -1,0 +1,17 @@
+{
+  "name": "@moebius/mongo-backup-service",
+  "entries": [
+    {
+      "version": "0.0.1",
+      "tag": "@moebius/mongo-backup-service_v0.0.1",
+      "date": "Fri, 25 Nov 2022 17:39:33 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@moebius/mongo-backup\" to `0.0.1`"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "@moebius/mongo-backup",
+  "entries": [
+    {
+      "version": "0.0.1",
+      "tag": "@moebius/mongo-backup_v0.0.1",
+      "date": "Fri, 25 Nov 2022 17:39:33 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Done some work"
+          }
+        ]
+      }
+    }
+  ]
+}

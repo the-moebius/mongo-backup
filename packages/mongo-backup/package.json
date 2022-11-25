@@ -1,6 +1,6 @@
 {
   "name": "@moebius/mongo-backup",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "MongoDB backup library",
   "scripts": {
     "build": "run-s clean build:compile",
