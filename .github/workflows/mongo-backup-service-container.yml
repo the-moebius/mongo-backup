@@ -41,5 +41,5 @@ jobs:
 
       - name: Build and push the image
         run: |
-          docker build --file "packages/mongo-backup-service/Dockerfile" --tag "${IMAGE_HASHED_TAG}" --tag "${IMAGE_LATEST_TAG}" .
+          docker build --file "packages/mongo-backup-service/Dockerfile" --tag "${IMAGE_HASHED_TAG}" --tag "${IMAGE_LATEST_TAG}" packages/mongo-backup-service
           docker push --all-tags "${IMAGE_NAME}"
