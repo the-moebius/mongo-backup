@@ -12,7 +12,7 @@ permissions:
   contents: read
 
 jobs:
-  install-build-test-push:
+  build-push-container-image:
 
     runs-on: ubuntu-latest
 
@@ -41,5 +41,5 @@ jobs:
 
       - name: Build and push the image
         run: |
-          docker build --file "packages/mongo-backup-service/Dockerfile" --tag "${IMAGE_HASHED_TAG}" --tag "${IMAGE_LATEST_TAG}" packages/mongo-backup-service
+          docker build --file "packages/mongo-backup-service/docker/Dockerfile" --tag "${IMAGE_HASHED_TAG}" --tag "${IMAGE_LATEST_TAG}" packages/mongo-backup-service
           docker push --all-tags "${IMAGE_NAME}"

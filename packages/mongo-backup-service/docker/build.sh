@@ -10,6 +10,6 @@ IMAGE_NAME="mongo-backup"
 
 # Building docker-image locally
 docker build \
-  --file "${ROOT_PATH}/Dockerfile" \
+  --file "${ROOT_PATH}/docker/Dockerfile" \
   --tag "${IMAGE_NAME}:latest" \
   "${ROOT_PATH}/"
