@@ -5,7 +5,7 @@
 # BUILD BASE IMAGE #
 #==================#
 
-FROM node:18-alpine AS build-base
+FROM node:18-bullseye AS build-base
 
 # Updating npm to the latest version
 RUN npm install -g npm
@@ -49,9 +49,13 @@ RUN npm install --omit=dev --no-fund --no-audit --no-package-lock
 # RUNTIME IMAGE #
 #===============#
 
-FROM node:18-alpine
+FROM node:18-bullseye
 
 WORKDIR /opt/app
+
+RUN wget -q -O /tmp/mongo-tools.deb https://fastdl.mongodb.org/tools/db/mongodb-database-tools-debian11-x86_64-100.6.1.deb \
+  && dpkg -i /tmp/mongo-tools.deb \
+  && rm /tmp/mongo-tools.deb
 
 # Adding application files from build image
 COPY --from=build /tmp/build/dist/ ./
