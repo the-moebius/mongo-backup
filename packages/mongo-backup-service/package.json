@@ -29,7 +29,7 @@
     "tag": "beta"
   },
   "dependencies": {
-    "@moebius/mongo-backup": "0.0.1",
+    "@moebius/mongo-backup": "workspace:*",
     "@sinclair/typebox": "^0.25.9",
     "node-schedule": "^2.1.0",
     "pino": "^8.7.0"

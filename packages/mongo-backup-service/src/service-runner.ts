@@ -20,6 +20,11 @@ export interface RunServiceOptions {
   configPath: string;
 }
 
+interface RunJobArgs {
+  config: Config;
+  job: Job;
+}
+
 
 export async function runService(options: RunServiceOptions) {
 
@@ -38,7 +43,7 @@ function scheduleJobs(config: Config) {
       `Scheduling job: "${job.name}" at "${job.schedule}"`
     );
 
-    scheduleJob(job.schedule, () => runJob({
+    scheduleJob(job.schedule, () => runJobSafe({
       config,
       job,
     }));
@@ -47,11 +52,25 @@ function scheduleJobs(config: Config) {
 
 }
 
-async function runJob(args: {
-  config: Config;
-  job: Job;
+async function runJobSafe(
+  args: RunJobArgs
 
-}): Promise<void> {
+): Promise<void> {
+
+  const { job } = args;
+
+  try {
+    await runJob(args);
+
+  } catch (error: any) {
+    logger.error(`Failed to run job: "${job.name}"`);
+    logger.error(error);
+
+  }
+
+}
+
+async function runJob(args: RunJobArgs): Promise<void> {
 
   const { config, job } = args;
 
