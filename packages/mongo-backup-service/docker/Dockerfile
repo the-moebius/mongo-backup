@@ -20,7 +20,7 @@ FROM build-base AS build
 WORKDIR /tmp/build
 
 COPY              \
-  ../src           \
+  ./src           \
   ./tsconfig.json \
   ./package.json  \
   ./
@@ -39,7 +39,7 @@ FROM build-base AS install
 
 WORKDIR /tmp/install
 
-COPY ../package.json ./
+COPY ./package.json ./
 
 # Installing only production dependencies to reduce size
 RUN npm install --omit=dev --no-fund --no-audit --no-package-lock
@@ -64,6 +64,6 @@ COPY --from=build /tmp/build/dist/ ./
 COPY --from=install /tmp/install/node_modules/ ./node_modules/
 
 # Copying manifest file
-COPY ../package.json ./
+COPY ./package.json ./
 
 ENTRYPOINT ["node", "cli.js"]
