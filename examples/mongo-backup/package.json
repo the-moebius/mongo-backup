@@ -8,7 +8,7 @@
     "clean": ":"
   },
   "dependencies": {
-    "@moebius/mongo-backup": "workspace:*",
+    "@moebius/mongo-backup": "0.0.1",
     "dotenv": "^16.0.3"
   },
   "devDependencies": {

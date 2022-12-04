@@ -140,11 +140,22 @@ async function runJob(args: RunJobArgs): Promise<void> {
     options.excludeCollections = job.excludeCollections;
   }
 
-  logger.info(`Starting to create a MongoDB dump`);
+  logger.info(
+    `Starting to create a MongoDB dump: ${job.name}`
+  );
+
+  const startTime = performance.now();
 
   await createMongoDump(options);
 
-  logger.info(`Finished creating a dump`);
+  const endTime = performance.now();
+
+  const duration = (endTime - startTime) / 1_000;
+
+  logger.info(
+    `Finished creating a dump: ${job.name}, ` +
+    `process took: ${duration.toFixed(2)} s.`
+  );
 
 }
 
